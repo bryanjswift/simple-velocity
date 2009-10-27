@@ -1,3 +1,5 @@
+.resolver
+.session
 project
 simple-velocity.*
 target
