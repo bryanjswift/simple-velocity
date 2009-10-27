@@ -1,6 +1,7 @@
+import bjs.project.ResolverPlugin
 import sbt._
 
-class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) {
+class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) with ResolverPlugin {
 	// *-- Compile Dependencies
 	// Servlet API
 	val servletApi = "javax.servlet" % "servlet-api" % "2.4"
@@ -11,6 +12,15 @@ class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) {
 	// Specs
 	val specs = "org.scala-tools.testing" % "specs" % "1.6.0" % "test->default"
 	val junit = "junit" % "junit" % "4.5" % "test->default"
+
+	// Publish settings
+	override def managedStyle = ManagedStyle.Maven
+	// Also package sources and docs
+	override def packageDocsJar = defaultJarPath("-javadoc.jar")
+	override def packageSrcJar= defaultJarPath("-sources.jar")
+	val sourceArtifact = Artifact(artifactID, "src", "jar", Some("sources"), Nil, None)
+	val docsArtifact = Artifact(artifactID, "docs", "jar", Some("javadoc"), Nil, None)
+	override def packageToPublishActions = super.packageToPublishActions ++ Seq(packageDocs, packageSrc)
 
 	// override looking for jars in ./lib
 	override def dependencyPath = "src" / "main" / "lib"
