@@ -1,31 +1,28 @@
 package velocity
 
-import java.util.{ArrayList,List => JList,Properties}
-import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
-import scala.collection.jcl.Conversions.unconvertList
+import java.util.Properties
+import javax.servlet.http.{HttpServletRequest => Request, HttpServletResponse => Response}
 import org.apache.velocity.{Template,VelocityContext}
 import org.apache.velocity.app.VelocityEngine
-import org.apache.velocity.context.Context
 
 object VelocityHelper {
-	private[this] val properties = new Properties()
-	properties.load(getClass().getClassLoader().getResourceAsStream("velocity/velocity.properties"))
-	private[this] val engine = new VelocityEngine(properties)
+	private val properties = new Properties()
+	properties.load(getClass.getClassLoader.getResourceAsStream("velocity/velocity.properties"))
+	private val engine = new VelocityEngine(properties)
 	def getTemplate(template:String) = engine.getTemplate(template)
 }
 
-private[velocity] class IterableWrapper[T](iterable:Iterable[T]) extends java.lang.Iterable[T] {
-	def iterator() = new java.util.Iterator[T] {
-		private val delegate = iterable.elements
-		def hasNext = delegate.hasNext
-		def next() = delegate.next
-		def remove = {
-			throw new UnsupportedOperationException
+class VelocityView(path:String) {
+	private class IterableWrapper[T](iterable:Iterable[T]) extends java.lang.Iterable[T] {
+		def iterator() = new java.util.Iterator[T] {
+			private val delegate = iterable.elements
+			def hasNext = delegate.hasNext
+			def next() = delegate.next
+			def remove = {
+				throw new UnsupportedOperationException
+			}
 		}
 	}
-}
-
-class VelocityView(path:String) {
 	val template:Template = VelocityHelper.getTemplate(path)
 	def createVelocityContext(model:Map[String,Any],request:Request,response:Response) = {
 		val context = new VelocityContext()
