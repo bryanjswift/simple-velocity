@@ -1,18 +1,11 @@
 package velocity
 
 import java.util.Properties
-import javax.servlet.http.{HttpServletRequest => Request, HttpServletResponse => Response}
-import org.apache.velocity.{Template,VelocityContext}
+import javax.servlet.http.{HttpServletResponse => Response}
+import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
 
 object VelocityHelper {
-	private val properties = new Properties()
-	properties.load(getClass.getClassLoader.getResourceAsStream("velocity/velocity.properties"))
-	private val engine = new VelocityEngine(properties)
-	def getTemplate(template:String) = engine.getTemplate(template)
-}
-
-class VelocityView(path:String) {
 	private class IterableWrapper[T](iterable:Iterable[T]) extends java.lang.Iterable[T] {
 		def iterator = new java.util.Iterator[T] {
 			private val delegate = iterable.elements
@@ -23,8 +16,11 @@ class VelocityView(path:String) {
 			}
 		}
 	}
-	val template:Template = VelocityHelper.getTemplate(path)
-	def createVelocityContext(model:Map[String,Any],request:Request,response:Response) = {
+	private lazy val engine = new VelocityEngine(properties)
+	private val properties = new Properties()
+	properties.load(getClass.getClassLoader.getResourceAsStream("velocity/velocity.properties"))
+	def getTemplate(template:String) = engine.getTemplate(template)
+	def createVelocityContext(model:Map[String,Any]) = {
 		val context = new VelocityContext()
 		model.foreach(pair =>
 			if (pair._2.isInstanceOf[Iterable[_]])
@@ -34,9 +30,11 @@ class VelocityView(path:String) {
 		)
 		context
 	}
-	def render(model:Map[String,Any],request:Request,response:Response):Unit = {
-		val context = createVelocityContext(model,request,response)
-		response.setCharacterEncoding("UTF-8")
-		template.merge(context,response.getWriter())
-	}
+}
+
+class VelocityView(path:String) {
+	private val template = VelocityHelper.getTemplate(path)
+	require(template.process,"Error processing or initializing")
+	def render(model:Map[String,Any],response:Response):Unit =
+		template.merge(VelocityHelper.createVelocityContext(model),response.getWriter())
 }
