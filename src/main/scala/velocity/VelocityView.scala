@@ -1,42 +1,12 @@
 package velocity
 
-import java.util.{ArrayList,List => JList,Properties}
+import collections.IterableWrapper
 import javax.servlet.http.{HttpServletRequest => Request, HttpServletResponse => Response}
-import scala.collection.jcl.Conversions.unconvertList
-import org.apache.velocity.{Template,VelocityContext}
-import org.apache.velocity.app.VelocityEngine
+import org.apache.velocity.VelocityContext
 import org.apache.velocity.context.Context
 
-object VelocityHelper {
-	private var initialized = false
-	private val ClassLoader = getClass().getClassLoader()
-	private lazy val properties = new Properties()
-	private lazy val engine = loadEngine
-	private def resource(path:String) =
-		ClassLoader.getResourceAsStream(path)
-	private def loadEngine = {
-		if (!initialized) properties.load(resource("velocity/velocity.properties"))
-		new VelocityEngine(properties)
-	}
-	def load(path:String) = {
-		properties.load(resource(path))
-		initialized = true
-	}
-	def getTemplate(template:String) = engine.getTemplate(template)
-}
-
 class VelocityView(path:String) {
-	private[velocity] class IterableWrapper[T](iterable:Iterable[T]) extends java.lang.Iterable[T] {
-		def iterator() = new java.util.Iterator[T] {
-			private val delegate = iterable.elements
-			def hasNext = delegate.hasNext
-			def next() = delegate.next
-			def remove = {
-				throw new UnsupportedOperationException
-			}
-		}
-	}
-	val template:Template = VelocityHelper.getTemplate(path)
+	val template = VelocityHelper.getTemplate(path)
 	def createVelocityContext(model:Map[String,Any],request:Request,response:Response) = {
 		val context = new VelocityContext()
 		model.foreach(t => {
