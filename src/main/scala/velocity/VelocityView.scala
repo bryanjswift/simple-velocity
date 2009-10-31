@@ -8,9 +8,21 @@ import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.context.Context
 
 object VelocityHelper {
-	private[this] val properties = new Properties()
-	properties.load(getClass().getClassLoader().getResourceAsStream("velocity/velocity.properties"))
-	private[this] val engine = new VelocityEngine(properties)
+	private var initialized = false
+	private val ClassLoader = getClass().getClassLoader()
+	private lazy val properties = new Properties()
+	private lazy val engine = loadEngine
+	load(resource("velocity/velocity.properties"))
+	private def resource(path:String) =
+		ClassLoader.getResourceAsStream(path)
+	private def loadEngine = {
+		if (!initialized) load(resource("velocity/velocity.properties"))
+		new VelocityEngine(properties)
+	}
+	def load(path:String) = {
+		properties.load(resource(path))
+		initialized = true
+	}
 	def getTemplate(template:String) = engine.getTemplate(template)
 }
 
