@@ -8,7 +8,7 @@ object VelocityViewSpecs extends Specification {
 	class Response extends DummyResponse {
 		val writer = new StringWriter()
 		override def getWriter():PrintWriter = new PrintWriter(writer)
-    override def setCharacterEncoding(encoding:String) = { }
+		override def setCharacterEncoding(encoding:String) = { }
 	}
 	val objTestPath = "templates/objTest.vm"
 	val listTestPath = "templates/listTest.vm"

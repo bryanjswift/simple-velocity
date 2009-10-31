@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 	<name>simple-velocity</name>
-  <groupId>velocity</groupId>
-  <artifactId>simple-velocity</artifactId>
-  <packaging>jar</packaging>
-  <version>0.1</version>
-  <dependencies>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity</artifactId>
-      <version>1.6.2</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>2.7.6</version>
-      <scope>compile</scope>
-    </dependency>
+	<groupId>velocity</groupId>
+	<artifactId>simple-velocity</artifactId>
+	<description>Classes to make interfacing with Velocity Templates a little easier to deal with</description>
+	<packaging>jar</packaging>
+	<version>0.1-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.6.2</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>2.7.6</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.scala-tools.testing</groupId>
 			<artifactId>specs</artifactId>
 			<version>1.6.0</version>
 			<scope>test</scope>
 		</dependency>
-  </dependencies>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -52,6 +53,7 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
+				 <debug>true</debug>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -72,4 +74,3 @@
 		</plugins>
 	</build>
 </project>
-
