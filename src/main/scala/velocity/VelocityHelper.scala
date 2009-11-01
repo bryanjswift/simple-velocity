@@ -14,8 +14,9 @@ object VelocityHelper {
 		ClassLoader.getResourceAsStream(path)
 	private def loadEngine = {
 		if (!initialized) load("velocity/velocity.properties")
-		val engine = new VelocityEngine(properties)
+		val engine = new VelocityEngine()
 		applicationAttributes.foreach(pair => engine.setApplicationAttribute(pair._1,pair._2))
+		engine.init(properties)
 		engine
 	}
 	def load(path:String) =
