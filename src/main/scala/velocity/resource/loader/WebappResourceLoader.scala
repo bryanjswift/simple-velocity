@@ -48,7 +48,9 @@ class WebappResourceLoader extends ResourceLoader {
 	}
 	private def findStream(path:String,template:String):Option[InputStream] =
 		try {
-			Some(servletContext.getResourceAsStream(path + trimTemplateName(template)))
+			val stream = servletContext.getResourceAsStream(path + trimTemplateName(template))
+			if (stream == null) { None }
+			else { Some(stream) }
 		} catch {
 			case e:Exception => None
 		}
