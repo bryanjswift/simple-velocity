@@ -10,10 +10,16 @@ class VelocityView(path:String) {
 	def createVelocityContext(model:Map[String,Any],request:Request,response:Response) = {
 		val context = new VelocityContext()
 		model.foreach(t => {
-			if (t._2.isInstanceOf[Iterable[_]])
-				context.put(t._1, new IterableWrapper(t._2.asInstanceOf[Iterable[_]]))
-			else
-				context.put(t._1, t._2)
+			val (key,value) = t
+			val toPut = value match {
+				case s:Seq[_] =>
+					java.util.Arrays.asList(s.toArray: _*)
+				case i:Iterable[_] =>
+					new IterableWrapper(value.asInstanceOf[Iterable[_]])
+				case _ =>
+					value
+			}
+			context.put(key,toPut)
 		})
 		context
 	}
