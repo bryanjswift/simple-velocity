@@ -3,7 +3,6 @@ package velocity
 import collections.IterableWrapper
 import javax.servlet.http.{HttpServletRequest => Request, HttpServletResponse => Response}
 import org.apache.velocity.VelocityContext
-import org.apache.velocity.context.Context
 
 class VelocityView(path:String) {
 	val template = VelocityHelper.getTemplate(path)
