@@ -1,4 +1,4 @@
-This is the template for the list test in VelocityViewSpecs.scala
+This is the template for testing lists in VelocityViewSpecs.scala
 #foreach ($test in $tests)
 $test.toString()
 #end
