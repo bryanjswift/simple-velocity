@@ -1,8 +1,8 @@
 package velocity
 
-import collections.IterableWrapper
 import javax.servlet.http.{HttpServletRequest => Request, HttpServletResponse => Response}
 import org.apache.velocity.VelocityContext
+import scala.collection.JavaConversions
 
 class VelocityView(path:String) {
 	val template = VelocityHelper.getTemplate(path)
@@ -14,7 +14,7 @@ class VelocityView(path:String) {
 				case s:Seq[_] =>
 					java.util.Arrays.asList(s.toArray: _*)
 				case i:Iterable[_] =>
-					new IterableWrapper(value.asInstanceOf[Iterable[_]])
+					JavaConversions.asIterable(i)
 				case _ =>
 					value
 			}

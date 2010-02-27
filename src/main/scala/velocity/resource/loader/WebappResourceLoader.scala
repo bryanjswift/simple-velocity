@@ -1,6 +1,5 @@
 package velocity.resource.loader
 
-import collections.VectorWrapper
 import java.io.{File,InputStream}
 import javax.servlet.ServletContext
 import org.apache.commons.collections.ExtendedProperties
@@ -8,6 +7,7 @@ import org.apache.velocity.exception.ResourceNotFoundException
 import org.apache.velocity.runtime.resource.Resource
 import org.apache.velocity.runtime.resource.loader.ResourceLoader
 import org.apache.velocity.util.StringUtils
+import scala.collection.JavaConversions
 
 class WebappResourceLoader extends ResourceLoader {
 	class StreamAndFile(val stream:InputStream,val file:Option[String])
@@ -16,7 +16,7 @@ class WebappResourceLoader extends ResourceLoader {
 	private var templates = Map[String,String]()
 	def init(configuration:ExtendedProperties) = {
 		log.trace("WebappResourceLoader : initialization starting.")
-		val vector = new VectorWrapper(configuration.getVector("path").asInstanceOf[java.util.Vector[String]])
+		val vector = JavaConversions.asIterable(configuration.getVector("path").asInstanceOf[java.util.Vector[String]])
 		paths = Array("/") ++ vector.map(s => s.trim)
 		if (log.isDebugEnabled) {
 			for (path <- paths) {
