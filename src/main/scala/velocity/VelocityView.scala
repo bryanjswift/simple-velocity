@@ -1,12 +1,13 @@
 package velocity
 
-import javax.servlet.http.{HttpServletRequest => Request, HttpServletResponse => Response}
+import java.io.{PrintWriter, StringWriter}
+import javax.servlet.http.{HttpServletResponse => Response}
 import org.apache.velocity.VelocityContext
 import scala.collection.JavaConversions
 
 class VelocityView(path:String) {
 	val template = VelocityHelper.getTemplate(path)
-	def createVelocityContext(model:Map[String,Any],request:Request,response:Response) = {
+	implicit def createVelocityContext(model:Map[String,Any]):VelocityContext = {
 		val context = new VelocityContext()
 		model.foreach(t => {
 			val (key,value) = t
@@ -22,9 +23,14 @@ class VelocityView(path:String) {
 		})
 		context
 	}
-	def render(model:Map[String,Any],request:Request,response:Response):Unit = {
-		val context = createVelocityContext(model,request,response)
+	def render(model:Map[String,Any],response:Response):Unit = {
 		response.setCharacterEncoding("UTF-8")
-		template.merge(context,response.getWriter())
+		template.merge(model,response.getWriter())
+	}
+	def merge(model:Map[String,Any]):String = {
+		val swriter = new StringWriter()
+		val writer = new PrintWriter(swriter)
+		template.merge(model,writer)
+		swriter.toString
 	}
 }
