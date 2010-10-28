@@ -11,7 +11,7 @@ class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) with 
 	// *-- Test Dependencies
 	// Specs
 	val junit = "junit" % "junit" % "4.7" % "test->default"
-	val specs = "org.scala-tools.testing" % "specs_2.8.0.Beta1" % "1.6.4" % "test->default"
+	val specs = "org.scala-tools.testing" % "specs_2.8.0" % "1.6.5" % "test->default"
 
 	// Publish settings
 	override def managedStyle = ManagedStyle.Maven

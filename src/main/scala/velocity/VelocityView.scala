@@ -12,7 +12,7 @@ class VelocityView(path:String) {
 			val (key,value) = t
 			val toPut = value match {
 				case s:Seq[_] =>
-					java.util.Arrays.asList(s.toArray: _*)
+					JavaConversions.asList(s)
 				case i:Iterable[_] =>
 					JavaConversions.asIterable(i)
 				case _ =>
