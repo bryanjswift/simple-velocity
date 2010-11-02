@@ -1,6 +1,10 @@
 .resolver
 .session
-project
+project/boot
+project/lib_managed
+project/plugins/lib_managed
+project/plugins/src_managed
+project/plugins/project/build.properties
 simple-velocity.*
 tags
 target

@@ -1,7 +1,6 @@
-import bjs.project.ResolverPlugin
 import sbt._
 
-class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) with ResolverPlugin {
+class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) with rsync.RsyncPublishing {
 	// *-- Compile Dependencies
 	// Servlet API
 	val servletApi = "javax.servlet" % "servlet-api" % "2.4"
@@ -15,6 +14,8 @@ class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) with 
 
 	// Publish settings
 	override def managedStyle = ManagedStyle.Maven
+	// Publish via rsync. `rsync -avz -e "ssh -p 3748" target/repo/ bryanjswift@bryanjswift.com:/var/www/vhosts/repos.bryanjswift.com/public/maven2`
+	def rsyncRepo = "bryanjswift.com:/var/www/vhosts/repos.bryanjswift.com/public/maven2"
 	// Also package sources and docs
 	override def packageDocsJar = defaultJarPath("-javadoc.jar")
 	override def packageSrcJar= defaultJarPath("-sources.jar")
