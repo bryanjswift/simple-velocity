@@ -3,7 +3,7 @@ import sbt._
 class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) with rsync.RsyncPublishing {
 	// *-- Compile Dependencies
 	// Servlet API
-	val servletApi = "javax.servlet" % "servlet-api" % "2.4"
+	val servletApi = "javax.servlet" % "servlet-api" % "2.4" % "provided"
 	// Velocity
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.2"
 
