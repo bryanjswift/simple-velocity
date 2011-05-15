@@ -1,5 +1,6 @@
 package velocity
 
+import java.io.{File, FileInputStream}
 import java.util.Properties
 import org.apache.velocity.app.VelocityEngine
 
@@ -10,8 +11,14 @@ object VelocityHelper {
 	private val ClassLoader = getClass().getClassLoader()
 	private lazy val properties = new Properties()
 	private lazy val engine = loadEngine
-	private def resource(path:String) =
-		ClassLoader.getResourceAsStream(path)
+	private def stream(path:String) = {
+		val f = new File(path)
+		if (f.exists) {
+			new FileInputStream(f)
+		} else {
+			ClassLoader.getResourceAsStream(path)
+		}
+	}
 	private def loadEngine = {
 		if (!initialized) load("velocity/velocity.properties")
 		val engine = new VelocityEngine()
@@ -23,8 +30,8 @@ object VelocityHelper {
 		if (initialized) {
 			throw new EngineIntializedException("VelocityEngine has already been initialized")
 		} else {
+			properties.load(stream(path))
 			initialized = true
-			properties.load(resource(path))
 		}
 	def getTemplate(template:String) = engine.getTemplate(template)
 	def setAttribute(key:Object,value:Object) =
