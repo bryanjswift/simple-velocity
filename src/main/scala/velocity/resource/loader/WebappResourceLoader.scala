@@ -16,7 +16,7 @@ class WebappResourceLoader extends ResourceLoader {
 	private var templates = Map[String,String]()
 	def init(configuration:ExtendedProperties) = {
 		log.trace("WebappResourceLoader : initialization starting.")
-		val vector = JavaConversions.asIterable(configuration.getVector("path").asInstanceOf[java.util.Vector[String]])
+		val vector = JavaConversions.asScalaIterable(configuration.getVector("path").asInstanceOf[java.util.Vector[String]])
 		paths = Array("/") ++ vector.map(s => s.trim)
 		if (log.isDebugEnabled) {
 			for (path <- paths) {
