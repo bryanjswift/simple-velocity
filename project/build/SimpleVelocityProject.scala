@@ -5,7 +5,7 @@ class SimpleVelocityProject(info:ProjectInfo) extends DefaultProject(info) with 
 	// Servlet API
 	val servletApi = "javax.servlet" % "servlet-api" % "2.4" % "provided"
 	// Velocity
-	val velocity = "org.apache.velocity" % "velocity" % "1.6.2"
+	val velocity = "org.apache.velocity" % "velocity" % "1.6.4"
 
 	// *-- Test Dependencies
 	// Specs
